@@ -28,3 +28,20 @@ per kategori, dan diurutkan berdasarkan harga. Klik baris untuk detail vendor.
 Situs ini bukan situs resmi Abata. Semua konten dan foto milik pemiliknya
 masing-masing; dipakai sebagai referensi pribadi, tidak untuk dipublikasikan
 ulang secara komersial.
+
+## Deploy
+
+- **Vercel (utama):** <https://abata-vendor-explorer.vercel.app>
+  Project `abata-vendor-explorer`, deploy production dari folder ini.
+  Vercel Authentication dimatikan → URL bisa dibuka siapa pun yang punya link
+  (unlisted), tetapi `noindex` lewat header `X-Robots-Tag` di `vercel.json`.
+  Password protection butuh plan Pro.
+- **GitHub Pages (cadangan):** <https://itsmealiffatih-creator.github.io/abata-vendor-explorer/>
+
+Update: ganti isi folder, lalu
+
+```powershell
+npx.cmd -y vercel@latest deploy --prod --yes
+git add -A; git commit -m "Update"; git push
+```
+
