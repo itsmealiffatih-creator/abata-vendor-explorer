@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abata Vendor Explorer — 509 vendor, 4.291 paket</title>
+<meta name="description" content="Katalog vendor pernikahan Abata Wedding Organizer hasil scraping abatawo.com: 509 vendor, 4.291 paket, rentang harga lengkap.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316302b'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23c9a227' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Abata Vendor Explorer">
+    <span class="mark">A</span>
+    <span class="brand-text"><strong>Abata</strong> Vendor Explorer</span>
+  </a>
+  <nav class="tabs" aria-label="Tampilan">
+    <button class="tab is-active" data-view="vendors" type="button">Vendor</button>
+    <button class="tab" data-view="packages" type="button">Daftar Harga</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <p class="eyebrow">Hasil scraping abatawo.com &middot; 25 kategori</p>
+  <h1>Semua vendor pernikahan Solo,<br>dalam satu layar.</h1>
+  <p class="lede">Data vendor, paket, dan harga diambil langsung dari katalog
+    Abata Wedding Organizer — lengkap dengan kontak dan tautan halaman aslinya.</p>
+  <div class="stats" id="stats"></div>
+</section>
+
+<main>
+  <!-- ============ VENDOR VIEW ============ -->
+  <section id="view-vendors" class="view">
+    <div class="controls">
+      <label class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Cari vendor, kategori, atau layanan…" autocomplete="off">
+      </label>
+      <select id="sort" aria-label="Urutkan vendor">
+        <option value="name">Nama A–Z</option>
+        <option value="price-asc">Harga terendah</option>
+        <option value="price-desc">Harga tertinggi</option>
+        <option value="pkgs">Paket terbanyak</option>
+        <option value="cat">Kategori</option>
+      </select>
+      <button id="reset" class="ghost" type="button">Reset</button>
+    </div>
+
+    <div class="chips" id="chips" role="group" aria-label="Filter kategori"></div>
+
+    <p class="resultline"><span id="count"></span><span class="hint" id="hint"></span></p>
+
+    <div class="grid" id="grid"></div>
+    <div class="more"><button id="more" class="btn" type="button">Tampilkan lebih banyak</button></div>
+    <p class="empty" id="empty" hidden>Tidak ada vendor yang cocok dengan pencarian itu.</p>
+  </section>
+
+  <!-- ============ PACKAGE VIEW ============ -->
+  <section id="view-packages" class="view" hidden>
+    <div class="controls">
+      <label class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q2" type="search" placeholder="Cari nama paket atau vendor…" autocomplete="off">
+      </label>
+      <select id="cat2" aria-label="Filter kategori"><option value="all">Semua kategori</option></select>
+      <select id="sort2" aria-label="Urutkan paket">
+        <option value="price-asc">Harga terendah</option>
+        <option value="price-desc">Harga tertinggi</option>
+        <option value="name">Nama paket A–Z</option>
+      </select>
+    </div>
+
+    <p class="resultline"><span id="count2"></span><span class="hint">Klik baris untuk melihat detail vendor &amp; paket.</span></p>
+
+    <div class="tablewrap">
+      <table class="ptable">
+        <thead>
+          <tr>
+            <th class="col-cat">Kategori</th>
+            <th class="col-vendor">Vendor</th>
+            <th class="col-pkg">Paket</th>
+            <th class="num">Harga</th>
+            <th class="num col-old">Normal</th>
+            <th class="col-desc">Deskripsi</th>
+          </tr>
+        </thead>
+        <tbody id="ptbody"></tbody>
+      </table>
+    </div>
+    <div class="more"><button id="more2" class="btn" type="button">Tampilkan lebih banyak</button></div>
+    <p class="empty" id="empty2" hidden>Tidak ada paket yang cocok.</p>
+  </section>
+
+  <section class="gallery" id="gallery" hidden>
+    <h2>Galeri Abata</h2>
+    <div class="gal-strip" id="galstrip"></div>
+  </section>
+</main>
+
+<footer>
+  <p><strong>Sumber data:</strong> <a href="https://abatawo.com/" target="_blank" rel="noopener">abatawo.com</a>
+     &middot; scraping <span id="stamp"></span> &middot; 509 vendor / 4.291 paket.</p>
+  <p class="fine">Situs demo statis untuk memvisualkan hasil scraping. Harga dapat berubah dan
+     bergantung pada tanggal serta sesi acara; selalu konfirmasi ke vendor.</p>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <div class="modal-bar">
+      <button class="modal-x" data-close type="button" aria-label="Tutup">&times;</button>
+    </div>
+    <div id="m-body"></div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
