@@ -100,6 +100,7 @@
     var prices = v.pkgs.map(function (p) { return p.p; }).filter(Boolean);
     var min = prices.length ? Math.min.apply(null, prices) : 0;
     var max = prices.length ? Math.max.apply(null, prices) : 0;
+    var photos = [v.img].concat(v.photos || []).filter(Boolean);
 
     var contact = [];
     v.tel.forEach(function (t) {
@@ -133,17 +134,31 @@
     }).join("") : '<p style="padding:8px 34px;color:var(--muted);font-size:13px">' +
         "Vendor ini belum mencantumkan daftar harga.</p>";
 
+    var heroHtml = photos.length
+      ? '<div class="m-hero"><img id="m-hero-img" src="' + esc(photos[0]) + '" alt="Foto ' +
+        esc(v.name) + '"></div>'
+      : "";
+    var thumbsHtml = photos.length > 1
+      ? '<div class="m-thumbs">' + photos.map(function (p, i) {
+          return '<button type="button" class="m-thumb' + (i === 0 ? " is-active" : "") +
+            '" data-src="' + esc(p) + '" aria-label="Foto ' + (i + 1) + '">' +
+            '<img src="' + esc(p) + '" alt="" loading="lazy"></button>';
+        }).join("") + "</div>"
+      : "";
+
     document.getElementById("m-body").innerHTML =
-      (v.img ? '<div class="m-hero"><img src="' + esc(v.img) + '" alt="Foto ' + esc(v.name) + '"></div>' : "") +
+      heroHtml +
       '<div class="m-head">' +
         '<span class="badge">' + esc(v.cat) + "</span>" +
         "<h2>" + esc(v.name) + "</h2>" +
         '<div class="m-meta">' +
           "<span>" + esc(v.pkgs.length + " paket") + "</span>" +
+          (photos.length > 1 ? "<span>· " + photos.length + " foto</span>" : "") +
           (min ? "<span>· " + esc(money(min)) + " – " + esc(money(max)) + "</span>" : "") +
         "</div>" +
         (contact.length ? '<div class="m-contact">' + contact.join("") + "</div>" : "") +
       "</div>" +
+      thumbsHtml +
       (v.desc ? '<div class="m-desc">' + esc(v.desc) + "</div>" : "") +
       '<div class="m-pkgs"><h3>Daftar paket &amp; harga</h3>' + pkgHtml + "</div>";
 
@@ -155,6 +170,15 @@
   }
 
   modal.addEventListener("click", function (e) {
+    var thumb = e.target.closest ? e.target.closest(".m-thumb") : null;
+    if (thumb) {
+      var hero = document.getElementById("m-hero-img");
+      if (hero) hero.src = thumb.getAttribute("data-src");
+      Array.prototype.forEach.call(modal.querySelectorAll(".m-thumb"), function (t) {
+        t.classList.toggle("is-active", t === thumb);
+      });
+      return;
+    }
     var btn = e.target.closest ? e.target.closest(".pkg-more button") : null;
     if (!btn) return;
     var id = btn.getAttribute("data-i");
@@ -208,6 +232,9 @@
     var links = [];
     if (v.ig) links.push('<a href="' + esc(v.ig) + '" target="_blank" rel="noopener">Instagram</a>');
     if (v.tel.length) links.push('<a href="' + esc(waLink(v.tel[0])) + '" target="_blank" rel="noopener">WhatsApp</a>');
+    if ((v.photos || []).length) {
+      links.push('<span class="shots">' + (v.photos.length + (v.img ? 1 : 0)) + " foto</span>");
+    }
     var top = v.img
       ? '<div class="card-top"><div><span class="badge">' + esc(v.cat) + "</span><h3>" +
         esc(v.name) + "</h3></div></div>"
